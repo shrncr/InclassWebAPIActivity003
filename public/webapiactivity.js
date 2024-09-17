@@ -1,9 +1,16 @@
 
 
 document.addEventListener("DOMContentLoaded", function() {
+   const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
+   let plays = document.getElementById("playList");
 
+   plays.addEventListener("change", ()=>{
+      let l = fetch(url);
+      console.log(l);
+   }
+   );
 	
-	const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
+	
 
    /*
      To get a specific play, add play name via query string, 
