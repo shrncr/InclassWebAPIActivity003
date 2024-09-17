@@ -18,19 +18,19 @@ To work on this project, you will need to create a personal copy of the reposito
 - To be consistent, use the same styling for commit messages that was given in the Project I.
     - [Prefix] – [Short description of the change]
       The following are the only possible options for [Prefix]:
-    - [FEAT] - For new features or major additions to the project.
+    - FEAT - For new features or major additions to the project.
         - Example: `FEAT - Added contact form to the Contact page`
-    - [FIX] - For bug fixes, corrections, or revisions to the code.
+    - FIX - For bug fixes, corrections, or revisions to the code.
         - Example: `FIX - Corrected navigation bar alignment on mobile devices`
-    - [STYLE] - For stylistic changes such as formatting, CSS modifications, or minor visual updates.
+    - STYLE - For stylistic changes such as formatting, CSS modifications, or minor visual updates.
         - Example: `STYLE - Updated color scheme for better contrast`
-    - [DOCS] - For changes or additions to the documentation, including README files and comments in the code.
+    - DOCS - For changes or additions to the documentation, including README files and comments in the code.
         - Example: `DOCS - Added project description and setup instructions to README`
-    - [SECURITY] - For changes related to improving the security of the website.
+    - SECURITY - For changes related to improving the security of the website.
         - Example: `SECURITY - Implemented input validation for contact form`
-    - [REFACTOR] - For code refactoring that doesn’t change functionality but improves code quality or organization.
+    - REFACTOR - For code refactoring that doesn’t change functionality but improves code quality or organization.
         - Example: `REFACTOR - Organized CSS files and cleaned up redundant styles`
-    - [TEST] - For adding tests or making changes to the testing suite.
+    - TEST - For adding tests or making changes to the testing suite.
         - Example: `TEST - Added validation tests for contact form input`
 
 ### 5. Submitting your work
