@@ -1,5 +1,6 @@
 
 
+import {Play, Act, Scene} from "./play-module.js";
 document.addEventListener("DOMContentLoaded", function() {
    const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
    let plays = document.getElementById("playList");
@@ -14,7 +15,9 @@ document.addEventListener("DOMContentLoaded", function() {
             playSect.querySelector("h2").innerHTML = data.title;
 
             let acts = data.acts;
-            let Play = new Play(data.acts);
+            let play = new Play(data.acts);
+            console.log(play.acts);
+            
             actSection.querySelector("h3").innerHTML = data.acts[1].name;
             
          })
