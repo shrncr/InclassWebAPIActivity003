@@ -3,10 +3,21 @@
 document.addEventListener("DOMContentLoaded", function() {
    const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
    let plays = document.getElementById("playList");
+   let playSect = document.getElementById("playHere");
+   let actSection = playSect.querySelector("article");
 
-   plays.addEventListener("change", ()=>{
-      let l = fetch(url);
-      console.log(l);
+   plays.addEventListener("change", (e)=>{
+      console.log(e);
+      fetch(url + `?name=${e.target.value}`)
+         .then(res => res.json())
+         .then(data =>{
+            playSect.querySelector("h2").innerHTML = data.title;
+
+            let acts = data.acts;
+            let Play = new Play(data.acts);
+            actSection.querySelector("h3").innerHTML = data.acts[1].name;
+            
+         })
    }
    );
 	
