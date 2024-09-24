@@ -53,40 +53,38 @@ document.addEventListener("DOMContentLoaded", function () {
     playList.addEventListener("change", (e) => {
       const selectedPlay = e.target.value;
 
-      // Check if the play data is already in localStorage
+      // check if the play data is already in local storage
       let storedPlay = localStorage.getItem(selectedPlay);
       
       if (storedPlay) {
-          // Parse the stored play data
+          // parse the stored play data
           let play = new Play(JSON.parse(storedPlay));
           let acts = play.getActs();
 
-          // Populate the act list
+          // populate the act list
           populateActList(acts);
 
-          // Default to Act 1 and Scene 1
+          // default to Act 1 and Scene 1
           populateSceneList(acts[0].scenes);
-          loadScene(acts[0].scenes[0]); // Load default Act 1, Scene 1
+          loadScene(acts[0].scenes[0]); // load default act 1, scene 1
 
           playSect.querySelector("h2").innerHTML = play.getPlay();
           actSection.querySelector("h3").innerHTML = acts[0].getAct();
       } else {
-          // Fetch the play data from the API if it's not in localStorage
+          // fetch the play data from the API if it's not in local storage
           fetch(url + `?name=${selectedPlay}`)
               .then(res => res.json())
               .then(data => {
                   let play = new Play(data);
                   let acts = play.getActs();
 
-                  // Store the play data in localStorage
+                  // atore the play data in local storage
                   localStorage.setItem(selectedPlay, JSON.stringify(data));
 
-                  // Populate the act list
                   populateActList(acts);
 
-                  // Default to Act 1 and Scene 1
                   populateSceneList(acts[0].scenes);
-                  loadScene(acts[0].scenes[0]); // Load default Act 1, Scene 1
+                  loadScene(acts[0].scenes[0]); 
 
                   playSect.querySelector("h2").innerHTML = play.getPlay();
                   actSection.querySelector("h3").innerHTML = acts[0].getAct();
@@ -94,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } 
     });
 
-    // Populate the act list
+    // populate the act list
     function populateActList(acts) {
         actList.innerHTML = '';
 
@@ -110,11 +108,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const selectedAct = acts[actList.value];
             actSection.querySelector("h3").innerHTML = selectedAct.getAct();
             populateSceneList(selectedAct.scenes);
-            loadScene(selectedAct.scenes[0]); // Default to Scene 1 in the selected act
+            loadScene(selectedAct.scenes[0]); // default to scene 1 in the selected act
         });
     }
 
-    // Populate the scene list
+    //populate the scene list
     function populateSceneList(scenes) {
         sceneList.innerHTML = '';
 
@@ -132,37 +130,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Function to load a scene
+    // function to load a scene
     function loadScene(scene) {
-        // Populate scene name, title, and stage direction
+        // populate scene name, title, and stage direction
         sceneDiv.querySelector("h4").textContent = scene.getScene();
         sceneDiv.querySelector(".title").textContent = scene.getTitle();
         sceneDiv.querySelector(".direction").textContent = scene.getDirection();
 
-        // Clear existing speeches
+        // clear existing speeches
         const existingSpeeches = sceneDiv.querySelectorAll(".speech");
         existingSpeeches.forEach(speech => speech.remove());
 
-        // Populate speeches
+        // populate speeches
         speakerList= [];
         scene.speeches.forEach(speech => {
             const speechDiv = document.createElement("div");
             speechDiv.classList.add("speech");
 
-            // Speaker name
+            // speaker name
             const speakerSpan = document.createElement("span");
             speakerSpan.textContent = speech.getSpeaker();
             speechDiv.appendChild(speakerSpan);
             speakerList.push(speech.getSpeaker());
 
-            // Speech lines
+            // speech lines
             speech.getLines().forEach(line => {
                 const lineP = document.createElement("p");
                 lineP.textContent = line;
                 speechDiv.appendChild(lineP);
             });
 
-            // Append the speech to the scene
+            // append the speech to the scene
             sceneDiv.appendChild(speechDiv);
             
         });
@@ -175,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     //populate speakers
     function populateSpeakers(speakers) {
-        playerList.innerHTML = ''; // Clear the speaker list
+        playerList.innerHTML = ''; // clear the speaker list
 
         const option = document.createElement('option'); //default 
         option.textContent = "Select a Player";
