@@ -2,14 +2,53 @@
 import { Play, Act, Scene } from "./play-module.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-    const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
     
+    //filters for selected player & words when filter button clicked
+    function filter() {
+        const query = document.getElementById("txtHighlight").value.toLowerCase();
+        const selectedSpeaker = document.getElementById("playerList").value;
+        const speeches = sceneDiv.querySelectorAll(".speech");
+        
+        //check each speech for defined criteria (txt/speaker)
+        speeches.forEach(speechDiv => {
+            const speaker = speechDiv.querySelector("span").textContent;
+            const lines = Array.from(speechDiv.querySelectorAll("p"));
+    
+            //css reset
+            const speakerSpan = speechDiv.querySelector("span");
+            speakerSpan.innerHTML = speaker; // Reset to plain text
+    
+            //filter by speaker IF speaker selected
+            if (selectedSpeaker.toLowerCase() !== "select a player" && speaker.toLowerCase() !== selectedSpeaker.toLowerCase()) {
+                speechDiv.style.display = "none"; //hide
+                return;
+            } else {
+                speechDiv.style.display = ""; //show
+            }
+
+            //highlight words that match query
+            lines.forEach(lineP => {
+                const text = lineP.textContent;
+                lineP.innerHTML = text;
+    
+                if (query && text.toLowerCase().includes(query)) {
+                    const highlightedLine = text.replace(new RegExp(query, 'gi'), (match) => `<b>${match}</b>`);
+                    lineP.innerHTML = highlightedLine;
+                }
+            });
+        });
+    }
+    
+    document.getElementById("btnHighlight").addEventListener("click", filter); 
+
+    const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
     const playList = document.getElementById("playList");
     const actList = document.getElementById("actList");
     const sceneList = document.getElementById("sceneList");
     const playSect = document.getElementById("playHere");
     const actSection = document.getElementById("actHere");
     const sceneDiv = document.getElementById("sceneHere");
+    let speakerList = [];
 
     playList.addEventListener("change", (e) => {
       const selectedPlay = e.target.value;
@@ -52,8 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   playSect.querySelector("h2").innerHTML = play.getPlay();
                   actSection.querySelector("h3").innerHTML = acts[0].getAct();
               });
-      }
-  });
+        } 
+    });
 
     // Populate the act list
     function populateActList(acts) {
@@ -92,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loadScene(selectedScene);
         });
     }
-
+    
     // Function to load a scene
     function loadScene(scene) {
         // Populate scene name, title, and stage direction
@@ -105,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         existingSpeeches.forEach(speech => speech.remove());
 
         // Populate speeches
+        speakerList= [];
         scene.speeches.forEach(speech => {
             const speechDiv = document.createElement("div");
             speechDiv.classList.add("speech");
@@ -113,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const speakerSpan = document.createElement("span");
             speakerSpan.textContent = speech.getSpeaker();
             speechDiv.appendChild(speakerSpan);
+            speakerList.push(speech.getSpeaker());
 
             // Speech lines
             speech.getLines().forEach(line => {
@@ -123,23 +164,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Append the speech to the scene
             sceneDiv.appendChild(speechDiv);
+            
         });
+
+        //filter for only unique speakers
+        document.getElementById("txtHighlight").value = "";
+        populateSpeakers([...new Set(speakerList)]);
+
     }
+    
+    //populate speakers
+    function populateSpeakers(speakers) {
+        playerList.innerHTML = ''; // Clear the speaker list
 
+        const option = document.createElement('option'); //default 
+        option.textContent = "Select a Player";
+        option.value = "Select a Player";
+        playerList.appendChild(option);
 
-   /*
-     To get a specific play, add play name via query string, 
-	   e.g., url = url + '?name=hamlet';
-	 
-	 https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php?name=hamlet
-	 https://www.randyconnolly.com/funwebdev/3rd/api/shakespeare/play.php?name=jcaesar
-     
-   */
-	 
-   
-    /* note: you may get a CORS error if you test this locally (i.e., directly from a
-       local file). To work correctly, this needs to be tested on a local web server.  
-       Some possibilities: if using Visual Code, use Live Server extension; if Brackets,
-       use built-in Live Preview.
-    */
+        speakers.forEach(speaker => { //put all speakers in curr act as an option
+            const option = document.createElement('option');
+            option.textContent = speaker;
+            playerList.appendChild(option);
+        });
+
+        playerList.selectedIndex = 0;
+    }
 });
