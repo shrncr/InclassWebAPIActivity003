@@ -1,13 +1,11 @@
 /* In this module, create three classes: Play, Act, and Scene. */
 export class Play {
     constructor(play) {
-        this.title = play.title; // Assuming there is a title field in play
+        this.title = play.title; 
         this.acts = play.acts.map(act => 
             new Act(act)
         );
     }
-    
-    // Corrected method definition
     getPlay() {
         return this.title;
     }
@@ -18,7 +16,7 @@ export class Play {
 
 export class Act {
     constructor(act) {
-        this.name = act.name; // Assuming there is a title field in each act
+        this.name = act.name; 
         this.scenes = act.scenes.map(scene => 
             new Scene(scene)
         );
@@ -33,11 +31,11 @@ export class Act {
 
 export class Scene {
     constructor(scene) {
-        this.name = scene.name; // Assuming there is a title field in each scene
+        this.name = scene.name; 
         this.title = scene.title;
         this.direction = scene.stageDirection;
         this.speeches = scene.speeches.map(speech => 
-            new Speech(speech) // Changed the recursive call to a new Speech class
+            new Speech(speech) 
         );
     }
     getScene() {
@@ -56,7 +54,7 @@ export class Scene {
 
 export class Speech {
     constructor(speech) {
-        this.speaker = speech.speaker; // Assuming there is content in each speech
+        this.speaker = speech.speaker;
         this.lines = speech.lines;
     }
     getSpeaker() {
