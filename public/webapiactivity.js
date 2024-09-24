@@ -2,6 +2,41 @@
 import { Play, Act, Scene } from "./play-module.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+    
+
+    function searchSpeeches() {
+        const query = document.getElementById("txtHighlight").value.toLowerCase();
+    
+        if (!query) return;
+    
+        // Get all the speeches in the current scene
+        const speeches = sceneDiv.querySelectorAll(".speech");
+    
+        speeches.forEach(speechDiv => {
+            const speaker = speechDiv.querySelector("span").textContent.toLowerCase();
+            const lines = Array.from(speechDiv.querySelectorAll("p"));
+    
+            speechDiv.querySelector("span").innerHTML = speechDiv.querySelector("span").textContent;
+    
+            if (speaker.includes(query)) {
+                const highlightedSpeaker = speechDiv.querySelector("span").textContent.replace(new RegExp(query, 'gi'), (match) => `<span class="highlight">${match}</span>`);
+                speechDiv.querySelector("span").innerHTML = highlightedSpeaker;
+            }
+    
+            lines.forEach(lineP => {
+                const text = lineP.textContent;
+                lineP.innerHTML = text;
+    
+                if (text.toLowerCase().includes(query)) {
+                    const highlightedLine = text.replace(new RegExp(query, 'gi'), (match) => `<b>${match}</b>`);
+                    lineP.innerHTML = highlightedLine;
+                }
+            });
+        });
+    }
+    
+    document.getElementById("btnHighlight").addEventListener("click", searchSpeeches);
+
     const url = 'https://www.randyconnolly.com//funwebdev/3rd/api/shakespeare/play.php';
     
     const playList = document.getElementById("playList");
