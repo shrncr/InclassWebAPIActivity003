@@ -6,34 +6,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function searchSpeeches() {
         const query = document.getElementById("txtHighlight").value.toLowerCase();
-    
-        if (!query) return;
+        const selectedSpeaker = document.getElementById("playerList").value;
     
         // Get all the speeches in the current scene
         const speeches = sceneDiv.querySelectorAll(".speech");
     
         speeches.forEach(speechDiv => {
-            const speaker = speechDiv.querySelector("span").textContent.toLowerCase();
+            const speaker = speechDiv.querySelector("span").textContent;
             const lines = Array.from(speechDiv.querySelectorAll("p"));
     
-            speechDiv.querySelector("span").innerHTML = speechDiv.querySelector("span").textContent;
+            // Clear previous highlighting
+            const speakerSpan = speechDiv.querySelector("span");
+            speakerSpan.innerHTML = speaker; // Reset to plain text
     
-            if (speaker.includes(query)) {
-                const highlightedSpeaker = speechDiv.querySelector("span").textContent.replace(new RegExp(query, 'gi'), (match) => `<span class="highlight">${match}</span>`);
-                speechDiv.querySelector("span").innerHTML = highlightedSpeaker;
+            // Filter by selected speaker if a speaker is selected
+            if (selectedSpeaker.toLowerCase() !== "select a player" && speaker.toLowerCase() !== selectedSpeaker.toLowerCase()) {
+                speechDiv.style.display = "none"; // Hide speeches from other speakers
+                return;
+            } else {
+                speechDiv.style.display = ""; // Show speeches if no speaker is selected or if speaker matches
             }
     
+            // Highlight the speaker's name if it matches the query and query is not empty
+            if (query && speaker.includes(query)) {
+                const highlightedSpeaker = speaker.replace(new RegExp(query, 'gi'), (match) => `<span class="highlight">${match}</span>`);
+                speakerSpan.innerHTML = highlightedSpeaker; // Set the entire highlighted name
+            }
+    
+            // Highlight the lines that match the query
             lines.forEach(lineP => {
                 const text = lineP.textContent;
-                lineP.innerHTML = text;
+                lineP.innerHTML = text; // Clear previous highlighting
     
-                if (text.toLowerCase().includes(query)) {
+                if (query && text.toLowerCase().includes(query)) {
                     const highlightedLine = text.replace(new RegExp(query, 'gi'), (match) => `<b>${match}</b>`);
                     lineP.innerHTML = highlightedLine;
                 }
             });
         });
     }
+    
+    
+    
     
     document.getElementById("btnHighlight").addEventListener("click", searchSpeeches);
 
@@ -140,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         existingSpeeches.forEach(speech => speech.remove());
 
         // Populate speeches
-        
+        speakerList= [];
         scene.speeches.forEach(speech => {
             const speechDiv = document.createElement("div");
             speechDiv.classList.add("speech");
@@ -167,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         //filter for only unique speakers
+        document.getElementById("txtHighlight").value = "";
         populateSpeakers([...new Set(speakerList)]);
 
     }
@@ -175,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const option = document.createElement('option');
         option.textContent = "Select a Player";
+        option.value = "Select a Player";
         playerList.appendChild(option);
 
         speakers.forEach(speaker => {
