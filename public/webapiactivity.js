@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loadScene(selectedScene);
         });
     }
-
+    let speakerList = [];
     // Function to load a scene
     function loadScene(scene) {
         // Populate scene name, title, and stage direction
@@ -140,14 +140,19 @@ document.addEventListener("DOMContentLoaded", function () {
         existingSpeeches.forEach(speech => speech.remove());
 
         // Populate speeches
+        
         scene.speeches.forEach(speech => {
             const speechDiv = document.createElement("div");
             speechDiv.classList.add("speech");
+
+            //empty speaker list
+            
 
             // Speaker name
             const speakerSpan = document.createElement("span");
             speakerSpan.textContent = speech.getSpeaker();
             speechDiv.appendChild(speakerSpan);
+            speakerList.push(speech.getSpeaker());
 
             // Speech lines
             speech.getLines().forEach(line => {
@@ -158,7 +163,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Append the speech to the scene
             sceneDiv.appendChild(speechDiv);
+            
         });
+
+        //filter for only unique speakers
+        populateSpeakers([...new Set(speakerList)]);
+
+    }
+    function populateSpeakers(speakers) {
+        playerList.innerHTML = ''; // Clear the speaker list
+
+        const option = document.createElement('option');
+        option.textContent = "Select a Player";
+        playerList.appendChild(option);
+
+        speakers.forEach(speaker => {
+            const option = document.createElement('option');
+            option.textContent = speaker;
+            playerList.appendChild(option);
+        });
+
+        playerList.selectedIndex = 0;
     }
 
 
