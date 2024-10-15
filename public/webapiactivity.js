@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sceneList.addEventListener("change", () => {
             const selectedScene = scenes[sceneList.value];
             loadScene(selectedScene);
-        });
+        }); 
     }
     
     // function to load a scene
